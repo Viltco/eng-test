@@ -28,7 +28,6 @@ class MRPBOMInherit(models.Model):
         })
 
     def button_approve(self):
-        self.product_id.button_bom_cost()
         self.write({
             'state': 'done'
         })

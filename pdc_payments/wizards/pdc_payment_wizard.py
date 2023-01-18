@@ -23,9 +23,6 @@ class PDCPaymentWizard(models.TransientModel):
     cheque_no = fields.Char()
     move_id = fields.Many2one('account.move', string='Invoice/Bill Ref')
     is_child = fields.Boolean()
-    is_withholding = fields.Boolean()
-    payment_amount_tax = fields.Float(string='Payment Amount With Tax')
-    analytical_account_id = fields.Many2one('account.analytic.account', string="Operating Unit")
 
     @api.onchange('journal_id')
     def _onchange_journal(self):
@@ -49,9 +46,6 @@ class PDCPaymentWizard(models.TransientModel):
                     'cheque_no': record.cheque_no,
                     'pdc_type': 'received',
                     'is_child': record.is_child,
-                    'is_withholding': record.is_withholding,
-                    'payment_amount_tax': record.payment_amount_tax,
-                    'analytical_account_id': record.analytical_account_id.id,
                 }
                 record = self.env['pdc.payment'].create(vals)
             elif rec.move_type == 'in_invoice':
@@ -66,9 +60,7 @@ class PDCPaymentWizard(models.TransientModel):
                     'cheque_no': record.cheque_no,
                     'pdc_type': 'sent',
                     'is_child': record.is_child,
-                    'is_withholding': record.is_withholding,
-                    'payment_amount_tax': record.payment_amount_tax,
-                    'analytical_account_id': record.analytical_account_id.id,
+
                 }
                 record = self.env['pdc.payment'].create(vals)
 
